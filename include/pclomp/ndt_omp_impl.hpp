@@ -44,7 +44,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointSource, typename PointTarget>
-pclomp::NormalDistributionsTransform<PointSource, PointTarget>::NormalDistributionsTransform () 
+pclomp::NormalDistributionsTransform<PointSource, PointTarget>::NormalDistributionsTransform ()
   : target_cells_ ()
   , resolution_ (1.0f)
   , step_size_ (0.1)
@@ -168,6 +168,8 @@ pclomp::NormalDistributionsTransform<PointSource, PointTarget>::computeTransform
   // Store transformation probability.  The realtive differences within each scan registration are accurate
   // but the normalization constants need to be modified for it to be globally accurate
   trans_probability_ = score / static_cast<double> (input_->points.size ());
+
+  hessian_ = hessian;
 }
 
 #ifndef _OPENMP
@@ -595,10 +597,10 @@ pclomp::NormalDistributionsTransform<PointSource, PointTarget>::computeHessian (
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointSource, typename PointTarget> void
-pclomp::NormalDistributionsTransform<PointSource, PointTarget>::updateHessian (Eigen::Matrix<double, 6, 6> &hessian, 
-	const Eigen::Matrix<double, 3, 6> &point_gradient_, 
-	const Eigen::Matrix<double, 18, 6> &point_hessian_, 
-	const Eigen::Vector3d &x_trans, 
+pclomp::NormalDistributionsTransform<PointSource, PointTarget>::updateHessian (Eigen::Matrix<double, 6, 6> &hessian,
+	const Eigen::Matrix<double, 3, 6> &point_gradient_,
+	const Eigen::Matrix<double, 18, 6> &point_hessian_,
+	const Eigen::Vector3d &x_trans,
 	const Eigen::Matrix3d &c_inv) const
 {
   Eigen::Vector3d cov_dxd_pi;

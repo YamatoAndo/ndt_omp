@@ -202,6 +202,13 @@ namespace pclomp
 			return (nr_iterations_);
 		}
 
+    	/** \brief Return the hessian matrix */
+    	inline Eigen::Matrix<double, 6, 6>
+			getHessian() const
+    	{
+       		return hessian_;
+    	}
+
 		/** \brief Convert 6 element transformation vector to affine transformation.
 		  * \param[in] x transformation vector of the form [x, y, z, roll, pitch, yaw]
 		  * \param[out] trans affine transform corresponding to given transfomation vector
@@ -487,7 +494,9 @@ namespace pclomp
 		/** \brief The second order derivative of the transformation of a point w.r.t. the transform vector, \f$ H_E \f$ in Equation 6.20 [Magnusson 2009]. */
   //      Eigen::Matrix<double, 18, 6> point_hessian_;
 
-    int num_threads_;
+    	int num_threads_;
+
+		Eigen::Matrix<double, 6, 6> hessian_;
 
 	public:
 		NeighborSearchMethod search_method;
